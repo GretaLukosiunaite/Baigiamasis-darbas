@@ -1,0 +1,24 @@
+###
+GET http://localhost:5000/api/registration/participants
+
+###
+POST http://localhost:5000/api/registration/participants
+content-type: application/json
+
+{ 
+    "name": "test",
+    "lastname": "test", 
+"email": "test", 
+"age": 19
+}
+
+###
+PUT http://localhost:5000/api/registration/participants/64ac14b5801990bb541d5ff7
+content-type: application/json
+
+{ 
+ "age": 24
+}
+
+###
+DELETE http://localhost:5000/api/registration/participants/64ac14e3801990bb541d5ff9
