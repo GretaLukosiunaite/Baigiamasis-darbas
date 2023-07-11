@@ -1,9 +1,25 @@
-import React from 'react'
 
-const Button = () => {
-  return (
-    <div>Button</div>
-  )
+interface IButtonProps {
+  text: string;
+  action?: () => void;
+  className: string
+  // fullwidth?: boolean | undefined;
+  // outline?: boolean | undefined;
+  // color?: COLOR;
 }
 
-export default Button
+const Button = ({ text, action, className }: IButtonProps) => {
+  return (
+    <button
+    className = {className}
+      onClick={action}
+      // fullwidth={fullwidth ? 1 : 0}
+      // outline={outline ? 1 : 0}
+      // color={color}
+    >
+      {text}
+    </button>
+  );
+};
+
+export default Button;
