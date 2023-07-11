@@ -44,7 +44,9 @@ class Api_instance {
   }
 
   public async deleteParticipant(id: string): Promise<IParticipant> {
-    const participantDeleted: IParticipant = await httpClient.delete(this.participants + '/' + id);
+    const participantDeleted: IParticipant = await httpClient.delete(
+      this.participants + '/' + id
+    );
 
     return participantDeleted;
   }
