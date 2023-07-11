@@ -11,7 +11,7 @@ interface IButtonProps {
 const Button = ({ text, action, className }: IButtonProps) => {
   return (
     <button
-    className = {className}
+    className = {className ? `button ${className}`: `button`}
       onClick={action}
       // fullwidth={fullwidth ? 1 : 0}
       // outline={outline ? 1 : 0}
