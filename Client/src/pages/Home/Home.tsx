@@ -1,9 +1,18 @@
-import React from 'react'
+import React from 'react';
+
+import Button from '../../components/atoms/Button/Button';
+
 
 const Home = () => {
-  return (
-    <div>Home</div>
-  )
-}
+  function test(): void {
+    throw new Error('Function not implemented.');
+  }
 
-export default Home
+  return (
+    <div>
+      <Button text='TEST' action={test} className='button is-responsive is-primary'/>
+    </div>
+  );
+};
+
+export default Home;
