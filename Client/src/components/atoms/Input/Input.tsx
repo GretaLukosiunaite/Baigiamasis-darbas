@@ -29,13 +29,6 @@ const Input = ({
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder ? placeholder : ''}
         />
-        {/* <StyledInput
-          className={className ? `input ${className}` : `input`}
-          type={type}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          placeholder={placeholder ? placeholder : ''}
-        /> */}
       </div>
     </div>
   );
