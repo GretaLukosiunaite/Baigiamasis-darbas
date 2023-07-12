@@ -1,9 +1,44 @@
-import React from 'react'
+import React from 'react';
+import { StyledInput } from './styles';
 
-const Input = () => {
-  return (
-    <div>Input</div>
-  )
+interface IInputProps {
+  type: 'text' | 'number';
+  value: string | number;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+  placeholder?: string;
+  labelText?: string;
+  className: string;
 }
 
-export default Input
+const Input = ({
+  type,
+  value,
+  setValue,
+  placeholder,
+  labelText,
+  className,
+}: IInputProps) => {
+  return (
+    <div className='field'>
+      <label className='label'>{labelText}</label>
+      <div className='control'>
+        <input
+          className={className ? `input ${className}` : `input`}
+          type={type}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={placeholder ? placeholder : ''}
+        />
+        <StyledInput
+          className={className ? `input ${className}` : `input`}
+          type={type}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={placeholder ? placeholder : ''}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Input;
