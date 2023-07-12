@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import TableRow from '../../molecules/TableRow';
 
 const Table = () => {
   return (
-    <div>Table</div>
-  )
-}
+    <div>
+      <TableRow></TableRow>
+    </div>
+  );
+};
 
-export default Table
+export default Table;

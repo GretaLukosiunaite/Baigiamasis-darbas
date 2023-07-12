@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyledInput } from './styles';
 
 interface IInputProps {
   type: 'text' | 'number' | 'email';
