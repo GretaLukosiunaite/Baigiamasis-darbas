@@ -3,8 +3,16 @@ import Button from '../../atoms/Button';
 import { StyledHeader } from './styles';
 import Modal from '../../atoms/Modal';
 import Form from '../../molecules/Form';
+import InputSearch from '../../atoms/InputSearch';
+import ICONS from '../../../assets/icons';
 
-const Header = () => {
+interface ISearchProps {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>> | (() => void);
+}
+
+
+const Header = ( {searchValue, setSearchValue}: ISearchProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -17,6 +25,13 @@ const Header = () => {
 
   return (
     <StyledHeader>
+      <InputSearch
+        type={'text'}
+        value={searchValue}
+        setValue={setSearchValue}
+        icon={ICONS.search}
+        placeholder='Search' 
+        className={'is-primary is-success'}      />
       <Button
         text='Pridėti naują'
         action={handleButtonClick}
