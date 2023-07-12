@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyledInput } from './styles';
 
 interface IInputProps {
   type: 'text' | 'number';
@@ -15,13 +16,20 @@ const Input = ({
   setValue,
   placeholder,
   labelText,
-  className
+  className,
 }: IInputProps) => {
   return (
     <div className='field'>
       <label className='label'>{labelText}</label>
       <div className='control'>
         <input
+          className={className ? `input ${className}` : `input`}
+          type={type}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          placeholder={placeholder ? placeholder : ''}
+        />
+        <StyledInput
           className={className ? `input ${className}` : `input`}
           type={type}
           value={value}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Button from '../../components/atoms/Button/Button';
+
 import Input from '../../components/atoms/Input';
 
 
@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <div>
-      <Button text='TEST' action={test} className='is-responsive is-primary'/>
+    
       <Input labelText='test Input' className= 'is-primary' type='text' setValue={test} value={''} placeholder='test input'/>
     </div>
   );
