@@ -2,7 +2,7 @@ import React from 'react';
 import { StyledInput } from './styles';
 
 interface IInputProps {
-  type: 'text' | 'number';
+  type: 'text' | 'number' | 'email';
   value: string | number;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
@@ -29,13 +29,13 @@ const Input = ({
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder ? placeholder : ''}
         />
-        <StyledInput
+        {/* <StyledInput
           className={className ? `input ${className}` : `input`}
           type={type}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder={placeholder ? placeholder : ''}
-        />
+        /> */}
       </div>
     </div>
   );
