@@ -4,13 +4,14 @@ import { API } from '../../../shared/api';
 import { IParticipant } from '../../../shared/api/types';
 import { useState } from 'react';
 
-
-
 const Form = () => {
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
 
   const handleAddParticipant = async () => {
     try {
@@ -27,50 +28,65 @@ const Form = () => {
       setLastname('');
       setEmail('');
       setAge('');
+
+      setSuccess(true);
+      setError('');
     } catch (error) {
       console.error('Error adding participant:', error);
+      setError('Vartotojo pridėti nepavyko. Užpildykite visus laukus!');
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
     <div>
-      <Input
-        labelText='Vardas'
-        className='is-primary'
-        type='text'
-        setValue={setName}
-        value={name}
-        placeholder='Vardas'
-      />
-      <Input
-        labelText='Pavardė'
-        className='is-primary'
-        type='text'
-        setValue={setLastname}
-        value={lastname}
-        placeholder='Pavardė'
-      />
-      <Input
-        labelText='El.paštas'
-        className='is-primary'
-        type='email'
-        value={email}
-        setValue={setEmail}
-        placeholder='elektorinisipastas@email.com'
-      />
-      <Input
-        labelText='Amžius'
-        className='is-primary'
-        type='number'
-        value={age}
-        setValue={setAge}
-        placeholder='18'
-      />
-      <Button
-        text='Pridėti naują'
-        action={handleAddParticipant}
-        className='is-responsive is-primary modal-trigger'
-      />
+      {success ? (
+        <p className='success-modal'>Vartotojas pridėtas sėkmingai!</p>
+      ) : (
+        <div>
+          {error && <p className='error-message'>{error}</p>}
+          <Input
+            labelText='Vardas'
+            className='is-primary'
+            type='text'
+            setValue={setName}
+            value={name}
+            placeholder='Vardas'
+          />
+          <Input
+            labelText='Pavardė'
+            className='is-primary'
+            type='text'
+            setValue={setLastname}
+            value={lastname}
+            placeholder='Pavardė'
+          />
+          <Input
+            labelText='El.paštas'
+            className='is-primary'
+            type='email'
+            value={email}
+            setValue={setEmail}
+            placeholder='elektorinisipastas@email.com'
+          />
+          <Input
+            labelText='Amžius'
+            className='is-primary'
+            type='number'
+            value={age}
+            setValue={setAge}
+            placeholder='18'
+          />
+          <Button
+            text='Pridėti naują'
+            action={handleAddParticipant}
+            className='is-responsive is-primary modal-trigger'
+          />
+        </div>
+      )}
     </div>
   );
 };
