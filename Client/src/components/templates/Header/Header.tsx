@@ -1,15 +1,34 @@
-import React from 'react'
-import Button from '../../atoms/Button'
+import { useState } from 'react';
+import Button from '../../atoms/Button';
 import { StyledHeader } from './styles';
+import Modal from '../../atoms/Modal';
+import Form from '../../molecules/Form';
 
 const Header = () => {
-  function test(): void {
-    throw new Error('Function not implemented.');
-  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <StyledHeader><Button text='Pridėti naują' action={test} className='is-responsive is-primary'/></StyledHeader>
-  )
-}
+    <StyledHeader>
+      <Button
+        text='Pridėti naują'
+        action={handleButtonClick}
+        className='is-responsive is-primary modal-trigger'
+      />
+      {isModalOpen && (
+        <Modal onClose={handleCloseModal} isOpen={isModalOpen}>
+          <Form />
+        </Modal>
+      )}
+    </StyledHeader>
+  );
+};
 
-export default Header
+export default Header;
