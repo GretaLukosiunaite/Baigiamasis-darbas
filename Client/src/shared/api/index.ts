@@ -43,6 +43,18 @@ class Api_instance {
     return response;
   }
 
+  public async updateParticipant(
+    _id: string,
+    updatedParticipant: IParticipant
+  ): Promise<IParticipant> {
+    const participantUpdated: IParticipant = await httpClient.put(
+      this.participants + '/' + _id,
+      updatedParticipant
+    );
+
+    return participantUpdated;
+  }
+
   public async deleteParticipant(_id: string): Promise<IParticipant> {
     const participantDeleted: IParticipant = await httpClient.delete(
       this.participants + '/' + _id
