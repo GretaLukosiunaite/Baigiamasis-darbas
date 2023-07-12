@@ -1,56 +1,78 @@
-import React from 'react'
-import Input from '../../atoms/Input'
+import Input from '../../atoms/Input';
 import Button from '../../atoms/Button';
+import { API } from '../../../shared/api';
+import { IParticipant } from '../../../shared/api/types';
+import { useState } from 'react';
 
 
 
 const Form = () => {
-  function test(): void {
-    throw new Error('Function not implemented.');
-  }
+  const [name, setName] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
+
+  const handleAddParticipant = async () => {
+    try {
+      const participantData: IParticipant = {
+        name,
+        lastname,
+        email,
+        age: parseInt(age),
+      };
+
+      await API.addParticipant(participantData);
+      // Clear the form after adding the participant
+      setName('');
+      setLastname('');
+      setEmail('');
+      setAge('');
+    } catch (error) {
+      console.error('Error adding participant:', error);
+    }
+  };
 
   return (
     <div>
-    <Input
+      <Input
         labelText='Vardas'
         className='is-primary'
         type='text'
-        setValue={test}
-        value={''}
+        setValue={setName}
+        value={name}
         placeholder='Vardas'
       />
-          <Input
+      <Input
         labelText='Pavardė'
         className='is-primary'
         type='text'
-        setValue={test}
-        value={''}
+        setValue={setLastname}
+        value={lastname}
         placeholder='Pavardė'
       />
-          <Input
+      <Input
         labelText='El.paštas'
         className='is-primary'
         type='email'
-        setValue={test}
-        value={''}
+        value={email}
+        setValue={setEmail}
         placeholder='elektorinisipastas@email.com'
       />
-          <Input
+      <Input
         labelText='Amžius'
         className='is-primary'
         type='number'
-        setValue={test}
-        value={''}
+        value={age}
+        setValue={setAge}
         placeholder='18'
       />
       <Button
         text='Pridėti naują'
-        action={test}
+        action={handleAddParticipant}
         className='is-responsive is-primary modal-trigger'
       />
-
     </div>
-  )
-}
+  );
+};
 
-export default Form
+export default Form;
