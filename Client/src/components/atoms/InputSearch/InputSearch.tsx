@@ -5,22 +5,22 @@ interface IInputProps {
   value: string | number;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   placeholder?: string;
-  labelText?: string;
+  icon: any;
   className: string;
 }
 
-const Input = ({
+const InputSearch = ({
   type,
   value,
   setValue,
   placeholder,
-  labelText,
+  icon,
   className,
 }: IInputProps) => {
   return (
     <div className='field'>
-      <label className='label'>{labelText}</label>
-      <div className='control'>
+      <div className='control has-icons-left'>
+        <span className='icon is-small is-left'>{icon}</span>
         <input
           className={className ? `input ${className}` : `input`}
           type={type}
@@ -33,4 +33,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default InputSearch;

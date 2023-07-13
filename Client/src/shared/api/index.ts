@@ -15,6 +15,7 @@ httpClient.interceptors.response.use(
 export default httpClient;
 
 class Api_instance {
+  [x: string]: any;
   private participants: string;
 
   constructor() {
@@ -29,9 +30,9 @@ class Api_instance {
     return participants;
   }
 
-  public async getParticipant(id: string): Promise<IParticipant> {
+  public async getParticipant(_id: string): Promise<IParticipant> {
     const participant: IParticipant = await httpClient.get(
-      this.participants + '/' + id
+      this.participants + '/' + _id
     );
 
     return participant;
@@ -43,9 +44,21 @@ class Api_instance {
     return response;
   }
 
-  public async deleteParticipant(id: string): Promise<IParticipant> {
+  public async updateParticipant(
+    _id: string,
+    updatedParticipant: IParticipant
+  ): Promise<IParticipant> {
+    const participantUpdated: IParticipant = await httpClient.put(
+      this.participants + '/' + _id,
+      updatedParticipant
+    );
+
+    return participantUpdated;
+  }
+
+  public async deleteParticipant(_id: string): Promise<IParticipant> {
     const participantDeleted: IParticipant = await httpClient.delete(
-      this.participants + '/' + id
+      this.participants + '/' + _id
     );
 
     return participantDeleted;

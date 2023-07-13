@@ -1,15 +1,15 @@
-import { SetStateAction, useEffect, useState } from 'react';
-import Table from '../../components/organisims/Table';
-import Footer from '../../components/templates/Footer';
-import Header from '../../components/templates/Header';
-import { IParticipant } from '../../shared/api/types';
-import { API } from '../../shared/api';
-import TableTest from '../../components/organisims/Table copy/TableTest';
+import React, { useEffect, useState } from 'react';
+import { IParticipant } from '../../../shared/api/types';
+import { API } from '../../../shared/api';
+import Button from '../../atoms/Button';
+import { StyledDataContainer, StyledHeadlineContainer, StyledHeadlineRow, StyledTable, StyledTableRow } from './styles';
+import Modal from '../../atoms/Modal';
+import TableRowTest from '../../molecules/TableRow copy/TableRowTest';
+import Header from '../../templates/Header';
 
-const Home = () => {
+const TableTest = () => {
   const [participants, setParticipants] = useState<IParticipant[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  
 
   useEffect(() => {
     const fetchParticipants = async () => {
@@ -20,7 +20,7 @@ const Home = () => {
         console.error('Error fetching participants:', error);
       }
     };
-
+  
     fetchParticipants();
   }, []);
 
@@ -32,8 +32,8 @@ const Home = () => {
     const age = participant.age.toString();
 
     return (
-      name.includes(searchLower) ||
-      lastname.includes(searchLower) ||
+      name.toLowerCase().includes(searchLower) ||
+      lastname.toLowerCase().includes(searchLower) ||
       email.includes(searchLower) ||
       age.includes(searchLower)
     );
@@ -41,16 +41,14 @@ const Home = () => {
 
   return (
     <div>
-      {/* <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       {filteredParticipants.length > 0 ? (
-        <Table participants={filteredParticipants} />
+        <TableRowTest participants={filteredParticipants} />
       ) : (
-        <p>Nėra rezultatų</p>
-      )} */}
-     <TableTest/>
-      <Footer />
+        <p>No results found</p>
+      )}
     </div>
   );
 };
 
-export default Home;
+export default TableTest;
