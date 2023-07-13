@@ -4,25 +4,40 @@ import Footer from '../../components/templates/Footer';
 import Header from '../../components/templates/Header';
 import { IParticipant } from '../../shared/api/types';
 import { API } from '../../shared/api';
-import TableTest from '../../components/organisims/Table copy/TableTest';
 
 const Home = () => {
   const [participants, setParticipants] = useState<IParticipant[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  
+
+  // useEffect(() => {
+  //   const fetchParticipants = async () => {
+  //     try {
+  //       const fetchedParticipants = await API.getParticipants();
+  //       setParticipants(fetchedParticipants);
+  //     } catch (error) {
+  //       console.error('Error fetching participants:', error);
+  //     }
+  //   };
+
+  //   fetchParticipants();
+  // }, [participants]); // Include participants in the dependency array
 
   useEffect(() => {
-    const fetchParticipants = async () => {
-      try {
-        const fetchedParticipants = await API.getParticipants();
-        setParticipants(fetchedParticipants);
-      } catch (error) {
-        console.error('Error fetching participants:', error);
-      }
-    };
-
     fetchParticipants();
-  }, []);
+  }, [participants]);
+
+  const fetchParticipants = async () => {
+    try {
+      const fetchedParticipants = await API.getParticipants();
+      setParticipants(fetchedParticipants);
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+    }
+  };
+
+  const handleParticipantAdded = (participant: IParticipant) => {
+    setParticipants((prevParticipants) => [...prevParticipants, participant]);
+  };
 
   const filteredParticipants = participants.filter((participant) => {
     const searchLower = searchValue.toLowerCase();
@@ -41,13 +56,12 @@ const Home = () => {
 
   return (
     <div>
-      {/* <Header searchValue={searchValue} setSearchValue={setSearchValue} />
+      <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       {filteredParticipants.length > 0 ? (
         <Table participants={filteredParticipants} />
       ) : (
         <p>Nėra rezultatų</p>
-      )} */}
-     <TableTest/>
+      )}
       <Footer />
     </div>
   );

@@ -21,7 +21,7 @@ const TableRow = () => {
 
   useEffect(() => {
     fetchParticipants();
-  }, []);
+  }, [isEditing]);
 
   const fetchParticipants = async () => {
     try {
