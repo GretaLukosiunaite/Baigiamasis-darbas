@@ -3,6 +3,13 @@ import Button from '../../atoms/Button';
 import { API } from '../../../shared/api';
 import { IParticipant } from '../../../shared/api/types';
 import { useState } from 'react';
+import {
+  StyledButtonGrid,
+  StyledButtondiv,
+  StyledForm,
+  StyledFormRow,
+  StyledPTag,
+} from './styles';
 
 const Form = () => {
   const [name, setName] = useState('');
@@ -40,47 +47,58 @@ const Form = () => {
   return (
     <div>
       {success ? (
-        <p className='success-modal'>Vartotojas pridėtas sėkmingai!</p>
+        <StyledPTag className='success-modal'>
+          Vartotojas pridėtas sėkmingai!
+        </StyledPTag>
       ) : (
         <div>
-          {error && <p className='error-message'>{error}</p>}
-          <Input
-            labelText='Vardas'
-            className='is-primary'
-            type='text'
-            setValue={setName}
-            value={name}
-            placeholder='Vardas'
-          />
-          <Input
-            labelText='Pavardė'
-            className='is-primary'
-            type='text'
-            setValue={setLastname}
-            value={lastname}
-            placeholder='Pavardė'
-          />
-          <Input
-            labelText='El.paštas'
-            className='is-primary'
-            type='email'
-            value={email}
-            setValue={setEmail}
-            placeholder='El.paštas'
-          />
-          <Input
-            labelText='Amžius'
-            className='is-primary'
-            type='number'
-            value={age}
-            setValue={setAge}
-            placeholder='Amžius'
-          />
-          <Button
-            text='Pridėti naują'
-            action={handleAddParticipant}
-            className='is-responsive is-primary modal-trigger'
-          />
+          {error && (
+            <StyledPTag style={{ color: '#f14668' }} className='error-message'>
+              {error}
+            </StyledPTag>
+          )}
+          <StyledForm>
+            <Input
+              labelText='Vardas'
+              className='is-primary'
+              type='text'
+              setValue={setName}
+              value={name}
+              placeholder='Vardas'
+            />
+            <Input
+              labelText='Pavardė'
+              className='is-primary'
+              type='text'
+              setValue={setLastname}
+              value={lastname}
+              placeholder='Pavardė'
+            />
+
+            <Input
+              labelText='El.paštas'
+              className='is-primary'
+              type='email'
+              value={email}
+              setValue={setEmail}
+              placeholder='El.paštas'
+            />
+            <Input
+              labelText='Amžius'
+              className='is-primary'
+              type='number'
+              value={age}
+              setValue={setAge}
+              placeholder='Amžius'
+            />
+          </StyledForm>
+          <StyledButtondiv>
+            <Button
+              text='Pridėti naują'
+              action={handleAddParticipant}
+              className='is-primary modal-trigger'
+            />
+          </StyledButtondiv>
         </div>
       )}
     </div>

@@ -1,81 +1,108 @@
 import { styled } from 'styled-components';
 
-export const StyledTable = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  justify-content: center;
-  width: 100%;
-  gap: 3px;
-`;
-
-export const StyledHeadlineRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0px 67px 0px 27px;
-  width: 100%;
-  gap: 10px;
-`;
-
-export const StyledHeadlineContainer = styled.div`
-  min-width: 109px;
-
-  h6 {
-    font-weight: 500;
-    font-size: 0.875rem;
-    line-height: 140.62%;
-    letter-spacing: 0.1px;
-    text-align: right;
-  }
-
-  &:nth-child(2) {
-    min-width: 80px;
-  }
-
-  @media (min-width: 1090px) {
-    &:nth-child(2) {
-      min-width: 109px;
-    }
-  }
-`;
-
 export const StyledTableRow = styled.div`
-  background-color: #ffffff;
-  border-radius: 8px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0.5em 0.75em 0 0.75em;
 
-  padding: 0.5em 0.75em;
   width: 100%;
-  gap: 10px;
+
+  & > * {
+    border-bottom: 1px solid #dbdbdb;
+  }
+
+  @media (min-width: 768px) {
+    position: static;
+  }
+`;
+
+export const StyledPage = styled.div`
+  display: flex;
+  margin-top: 1rem;
+  gap: 0.25rem;
+
+  @media (min-width: 650px) {
+    justify-content: center;
+  }
 `;
 
 export const StyledDataContainer = styled.div`
-  min-width: 109px;
-  gap: 1em;
+  flex-grow: 1;
+  max-width: 300px;
   display: flex;
-  p {
-    font-weight: 400;
-    font-size: 0.875rem;
-    line-height: 100%;
-    letter-spacing: 0.25px;
-    text-align: right;
+  flex-direction: column;
+  height: 64px;
+  justify-content: center;
+
+  h6 {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 150%;
+    letter-spacing: 0.1px;
   }
 
-  &:nth-child(1) p {
-    text-align: left;
+  p {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 100%;
+    letter-spacing: 0.25px;
+    white-space: initial;
+    word-wrap: break-word;
+  }
+
+  input{
+    margin-right: 0.5em;
+  }
+
+  &:nth-child(1) {
+    min-width: 110px;
   }
 
   &:nth-child(2) {
-    min-width: 80px;
+    min-width: 180px;
   }
 
-  @media (min-width: 1090px) {
-    &:nth-child(2) {
-      min-width: 109px;
+  &:nth-child(3) {
+    min-width: 300px;
+  }
+
+  &:nth-child(4) {
+    min-width: 60px;
+  }
+
+  &:nth-child(5) {
+    min-width: 200px;
+  }
+
+  @media (min-width: 996px) {
+    width: 300px;
+    p {
+      padding-right: 0.5em;
     }
   }
 `;
+
+export const StyledButtonaContainer = styled.div`
+  width: 220px;
+  gap: 0.5em;
+  display: flex;
+  padding: 0.5em 0.75em;
+`;
+
+
+export const StyledDeleteDiv = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 0.25rem;
+
+p{
+  padding-right: 0;
+}
+`
+
+export const StyledDeleteButtonsWrapper = styled.div`
+display: flex;
+gap: 0.5rem;
+`

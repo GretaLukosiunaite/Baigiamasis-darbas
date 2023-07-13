@@ -4,6 +4,7 @@ import Footer from '../../components/templates/Footer';
 import Header from '../../components/templates/Header';
 import { IParticipant } from '../../shared/api/types';
 import { API } from '../../shared/api';
+import { StyledLayoutPage } from '../../components/templates/Layout/styles';
 
 const Home = () => {
   const [participants, setParticipants] = useState<IParticipant[]>([]);
@@ -38,7 +39,7 @@ const Home = () => {
   });
 
   return (
-    <div>
+    <StyledLayoutPage>
       <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       {filteredParticipants.length > 0 ? (
         <Table/>
@@ -46,7 +47,7 @@ const Home = () => {
         <p>Nėra rezultatų</p>
       )}
       <Footer />
-    </div>
+    </StyledLayoutPage>
   );
 };
 
