@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
 import { API } from '../../../shared/api';
 import Button from '../../atoms/Button';
-import { StyledDataContainer, StyledHeadlineContainer, StyledHeadlineRow, StyledTable, StyledTableRow } from './styles';
+import {
+  StyledDataContainer,
+  StyledHeadlineContainer,
+  StyledHeadlineRow,
+  StyledTable,
+  StyledTableRow,
+} from './styles';
 import Modal from '../../atoms/Modal';
 import TableRowTest from '../../molecules/TableRow copy/TableRowTest';
 import Header from '../../templates/Header';
 
-const TableTest = () => {
-  const [participants, setParticipants] = useState<IParticipant[]>([]);
+interface IFilterProps {
+  data: IParticipant[];
+}
+
+const TableTest = ({ data }: IFilterProps) => {
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
@@ -20,11 +29,11 @@ const TableTest = () => {
         console.error('Error fetching participants:', error);
       }
     };
-  
+
     fetchParticipants();
   }, []);
 
-  const filteredParticipants = participants.filter((participant) => {
+  const filteredParticipants = data.filter((participant) => {
     const searchLower = searchValue.toLowerCase();
     const name = participant.name.toLowerCase();
     const lastname = participant.lastname.toLowerCase();
@@ -32,8 +41,8 @@ const TableTest = () => {
     const age = participant.age.toString();
 
     return (
-      name.toLowerCase().includes(searchLower) ||
-      lastname.toLowerCase().includes(searchLower) ||
+      name.includes(searchLower) ||
+      lastname.includes(searchLower) ||
       email.includes(searchLower) ||
       age.includes(searchLower)
     );

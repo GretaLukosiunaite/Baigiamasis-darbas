@@ -2,28 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
 import { API } from '../../../shared/api';
 import Button from '../../atoms/Button';
-import {
-  StyledDataContainer,
-  StyledHeadlineContainer,
-  StyledHeadlineRow,
-  StyledTable,
-  StyledTableRow,
-} from './styles';
+import { StyledDataContainer, StyledHeadlineContainer, StyledHeadlineRow, StyledTable, StyledTableRow } from './styles';
 import Modal from '../../atoms/Modal';
 
-interface ITableProps {
-  participants: IParticipant[];
-}
-
-const TableRowTest = ({ participants }: ITableProps) => {
+const TableRowTest = () => {
+  const [participants, setParticipants] = useState<IParticipant[]>([]);
   const [deletedParticipantId, setDeletedParticipantId] = useState('');
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
     useState(false);
-  const [editingParticipants, setEditingParticipants] = useState<string[]>([]);
+
+  const [isEditing, setIsEditing] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
 
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+
+
 
   useEffect(() => {
     fetchParticipants();
@@ -38,12 +32,12 @@ const TableRowTest = ({ participants }: ITableProps) => {
     }
   };
 
-  const handleConfirmDeleteParticipant = (participantId: string) => {
+  const handleConfirmDeleteParticipant = (participantId) => {
     setDeletedParticipantId(participantId);
     setIsDeleteConfirmationVisible(true);
   };
 
-  const handleDeleteParticipant = async (participantId: string) => {
+  const handleDeleteParticipant = async (participantId) => {
     try {
       await API.deleteParticipant(participantId);
       // Fetch participants again to update the table
@@ -62,12 +56,12 @@ const TableRowTest = ({ participants }: ITableProps) => {
   };
 
   const handleEditParticipant = (participantId: string) => {
-    setEditingParticipants((prevEditing) => [...prevEditing, participantId]);
+    setIsEditing((prevEditing) => [...prevEditing, participantId]);
   };
 
   const handleSaveParticipant = async (participantId: string) => {
     try {
-      const updatedParticipantData = editingParticipants.find(
+      const updatedParticipantData = participants.find(
         (participant) => participant._id === participantId
       );
 
@@ -80,7 +74,7 @@ const TableRowTest = ({ participants }: ITableProps) => {
       fetchParticipants();
 
       // Exit editing mode for the participant
-      setEditingParticipants((prevEditing) =>
+      setIsEditing((prevEditing) =>
         prevEditing.filter((id) => id !== participantId)
       );
     } catch (error) {
@@ -89,7 +83,7 @@ const TableRowTest = ({ participants }: ITableProps) => {
   };
 
   const handleCancelEditParticipant = (participantId: string) => {
-    setEditingParticipants((prevEditing) =>
+    setIsEditing((prevEditing) =>
       prevEditing.filter((id) => id !== participantId)
     );
   };
@@ -97,6 +91,24 @@ const TableRowTest = ({ participants }: ITableProps) => {
   const handleDeleteSuccessModalClose = () => {
     setSuccess(false);
   };
+
+  // const generatePagination = () => {
+  //   const totalPages = Math.ceil(participants.length / itemsPerPage);
+  //   const paginationButtons = [];
+
+  //   for (let i = 1; i <= totalPages; i++) {
+  //     paginationButtons.push(
+  //       <Button
+  //         key={i}
+  //         text={i.toString()}
+  //         action={() => setCurrentPage(i)}
+  //         className={currentPage === i ? 'active' : ''}
+  //       />
+  //     );
+  //   }
+
+  //   return paginationButtons;
+  // };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, participants.length);
@@ -137,7 +149,7 @@ const TableRowTest = ({ participants }: ITableProps) => {
   return (
     <div>
       <StyledTable>
-        <StyledHeadlineRow>
+      <StyledHeadlineRow>
           <StyledHeadlineContainer className='table-header'>
             <h6>Name</h6>
           </StyledHeadlineContainer>
@@ -154,153 +166,154 @@ const TableRowTest = ({ participants }: ITableProps) => {
             <h6></h6>
           </StyledHeadlineContainer>
         </StyledHeadlineRow>
-        {visibleParticipants.map((participant) => (
-          <StyledTableRow key={participant._id}>
-            <StyledDataContainer>
-              {editingParticipants.includes(participant._id) ? (
-                <input
-                  type='text'
-                  value={participant.name}
-                  onChange={(e) => {
-                    // Update the participant's name
-                    setParticipants((prevParticipants) =>
-                      prevParticipants.map((prevParticipant) =>
-                        prevParticipant._id === participant._id
-                          ? { ...prevParticipant, name: e.target.value }
-                          : prevParticipant
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <p>{participant.name}</p>
-              )}
-            </StyledDataContainer>
+      {visibleParticipants.map((participant) => (
+        <StyledTableRow key={participant._id}>
+          <StyledDataContainer>
+            {isEditing.includes(participant._id) ? (
+              <input
+                type='text'
+                value={participant.name}
+                onChange={(e) => {
+                  // Update the participant's name
+                  setParticipants((prevParticipants) =>
+                    prevParticipants.map((prevParticipant) =>
+                      prevParticipant._id === participant._id
+                        ? { ...prevParticipant, name: e.target.value }
+                        : prevParticipant
+                    )
+                  );
+                }}
+              />
+            ) : (
+              <p>{participant.name}</p>
+            )}
+          </StyledDataContainer>
 
-            <StyledDataContainer>
-              {editingParticipants.includes(participant._id) ? (
-                <input
-                  type='text'
-                  value={participant.lastname}
-                  onChange={(e) => {
-                    // Update the participant's lastname
-                    setParticipants((prevParticipants) =>
-                      prevParticipants.map((prevParticipant) =>
-                        prevParticipant._id === participant._id
-                          ? { ...prevParticipant, lastname: e.target.value }
-                          : prevParticipant
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <p>{participant.lastname}</p>
-              )}
-            </StyledDataContainer>
+          <StyledDataContainer>
+            {isEditing.includes(participant._id) ? (
+              <input
+                type='text'
+                value={participant.lastname}
+                onChange={(e) => {
+                  // Update the participant's lastname
+                  setParticipants((prevParticipants) =>
+                    prevParticipants.map((prevParticipant) =>
+                      prevParticipant._id === participant._id
+                        ? { ...prevParticipant, lastname: e.target.value }
+                        : prevParticipant
+                    )
+                  );
+                }}
+              />
+            ) : (
+              <p>{participant.lastname}</p>
+            )}
+          </StyledDataContainer>
 
-            <StyledDataContainer>
-              {editingParticipants.includes(participant._id) ? (
-                <input
-                  type='text'
-                  value={participant.email}
-                  onChange={(e) => {
-                    // Update the participant's email
-                    setParticipants((prevParticipants) =>
-                      prevParticipants.map((prevParticipant) =>
-                        prevParticipant._id === participant._id
-                          ? { ...prevParticipant, email: e.target.value }
-                          : prevParticipant
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <p>{participant.email}</p>
-              )}
-            </StyledDataContainer>
+          <StyledDataContainer>
+            {isEditing.includes(participant._id) ? (
+              <input
+                type='text'
+                value={participant.email}
+                onChange={(e) => {
+                  // Update the participant's email
+                  setParticipants((prevParticipants) =>
+                    prevParticipants.map((prevParticipant) =>
+                      prevParticipant._id === participant._id
+                        ? { ...prevParticipant, email: e.target.value }
+                        : prevParticipant
+                    )
+                  );
+                }}
+              />
+            ) : (
+              <p>{participant.email}</p>
+            )}
+          </StyledDataContainer>
 
-            <StyledDataContainer>
-              {editingParticipants.includes(participant._id) ? (
-                <input
-                  type='text'
-                  value={participant.age}
-                  onChange={(e) => {
-                    // Update the participant's age
-                    setParticipants((prevParticipants) =>
-                      prevParticipants.map((prevParticipant) =>
-                        prevParticipant._id === participant._id
-                          ? { ...prevParticipant, age: e.target.value }
-                          : prevParticipant
-                      )
-                    );
-                  }}
-                />
-              ) : (
-                <p>{participant.age}</p>
-              )}
-            </StyledDataContainer>
+          <StyledDataContainer>
+            {isEditing.includes(participant._id) ? (
+              <input
+                type='text'
+                value={participant.age}
+                onChange={(e) => {
+                  // Update the participant's age
+                  setParticipants((prevParticipants) =>
+                    prevParticipants.map((prevParticipant) =>
+                      prevParticipant._id === participant._id
+                        ? { ...prevParticipant, age: e.target.value }
+                        : prevParticipant
+                    )
+                  );
+                }}
+              />
+            ) : (
+              <p>{participant.age}</p>
+            )}
+          </StyledDataContainer>
 
-            <StyledDataContainer>
-              {isDeleteConfirmationVisible &&
-              participant._id === deletedParticipantId ? (
-                <div>
-                  <p>Ar tikrai norite ištrinti?</p>
-                  <Button
-                    text='Taip'
-                    action={() => handleDeleteParticipant(participant._id)}
-                    className='is-responsive is-danger is-outlined'
-                  />
-                  <Button
-                    text='Atšaukti'
-                    action={handleCancelDeleteParticipant}
-                    className='is-responsive is-primary'
-                  />
-                </div>
-              ) : (
-                <div>
-                  {editingParticipants.includes(participant._id) ? (
-                    <>
-                      <Button
-                        text='Išsaugoti'
-                        action={() => handleSaveParticipant(participant._id)}
-                        className='is-responsive is-primary'
-                      />
-                      <Button
-                        text='Atšaukti'
-                        action={() =>
-                          handleCancelEditParticipant(participant._id)
-                        }
-                        className='is-responsive is-danger is-outlined'
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <Button
-                        text='Redaguoti'
-                        action={() => handleEditParticipant(participant._id)}
-                        className='is-responsive is-primary is-outlined'
-                      />
-                      <Button
-                        text='Ištrinti'
-                        action={() =>
-                          handleConfirmDeleteParticipant(participant._id)
-                        }
-                        className='is-responsive is-danger is-outlined'
-                      />
-                    </>
-                  )}
-                </div>
-              )}
-            </StyledDataContainer>
-          </StyledTableRow>
-        ))}
-      </StyledTable>
-      <div>{generatePagination()}</div>
+          <StyledDataContainer>
+            {isDeleteConfirmationVisible &&
+            participant._id === deletedParticipantId ? (
+              <div>
+                <p>Ar tikrai norite ištrinti?</p>
+                <Button
+                  text='Taip'
+                  action={() => handleDeleteParticipant(participant._id)}
+                  className='is-responsive is-danger is-outlined'
+                />
+                <Button
+                  text='Atšaukti'
+                  action={handleCancelDeleteParticipant}
+                  className='is-responsive is-primary'
+                />
+              </div>
+            ) : (
+              <div>
+                {isEditing.includes(participant._id) ? (
+                  <>
+                    <Button
+                      text='Išsaugoti'
+                      action={() => handleSaveParticipant(participant._id)}
+                      className='is-responsive is-primary'
+                    />
+                    <Button
+                      text='Atšaukti'
+                      action={() =>
+                        handleCancelEditParticipant(participant._id)
+                      }
+                      className='is-responsive is-danger is-outlined'
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      text='Redaguoti'
+                      action={() => handleEditParticipant(participant._id)}
+                      className='is-responsive is-primary is-outlined'
+                    />
+                    <Button
+                      text='Ištrinti'
+                      action={() =>
+                        handleConfirmDeleteParticipant(participant._id)
+                      }
+                      className='is-responsive is-danger is-outlined'
+                    />
+                  </>
+                )}
+              </div>
+            )}
+          </StyledDataContainer>
+        </StyledTableRow>
+      ))}
+
       <Modal isOpen={success} onClose={handleDeleteSuccessModalClose}>
         <div>
           <p>Vartotojas ištrintas sėkmingai!</p>
         </div>
       </Modal>
+      </StyledTable>
+      <div>{generatePagination()}</div>
     </div>
   );
 };
