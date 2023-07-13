@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
 import { API } from '../../../shared/api';
 import Button from '../../atoms/Button';
-import { StyledDataContainer, StyledTableRow } from './styles';
+import {
+  StyledButtonaContainer,
+  StyledDataContainer,
+  StyledDeleteButtonsWrapper,
+  StyledDeleteDiv,
+  StyledPage,
+  StyledTableRow,
+} from './styles';
 import Modal from '../../atoms/Modal';
+import { StyledPTag } from '../Form/styles';
 
 const TableRow = () => {
   const [participants, setParticipants] = useState<IParticipant[]>([]);
@@ -41,7 +49,7 @@ const TableRow = () => {
     try {
       await API.deleteParticipant(participantId);
       // Fetch participants again to update the table
-      fetchParticipants();
+      // fetchParticipants();
       setIsDeleteConfirmationVisible(false);
       setDeletedParticipantId('');
       setSuccess(true);
@@ -71,7 +79,7 @@ const TableRow = () => {
       await API.updateParticipant(participantId, updatedParticipantData);
 
       // Fetch participants again to update the table
-      fetchParticipants();
+      // fetchParticipants();
 
       // Exit editing mode for the participant
       setIsEditing((prevEditing) =>
@@ -147,7 +155,7 @@ const TableRow = () => {
   };
 
   return (
-    <div>
+    <>
       {visibleParticipants.map((participant) => (
         <StyledTableRow key={participant._id}>
           <StyledDataContainer>
@@ -237,51 +245,53 @@ const TableRow = () => {
           <StyledDataContainer>
             {isDeleteConfirmationVisible &&
             participant._id === deletedParticipantId ? (
-              <div>
+              <StyledDeleteDiv>
                 <p>Ar tikrai norite ištrinti?</p>
-                <Button
-                  text='Taip'
-                  action={() => handleDeleteParticipant(participant._id)}
-                  className='is-responsive is-danger is-outlined'
-                />
-                <Button
-                  text='Atšaukti'
-                  action={handleCancelDeleteParticipant}
-                  className='is-responsive is-primary'
-                />
-              </div>
+                <StyledDeleteButtonsWrapper>
+                  <Button
+                    text='Taip'
+                    action={() => handleDeleteParticipant(participant._id)}
+                    className='is-danger is-outlined'
+                  />
+                  <Button
+                    text='Atšaukti'
+                    action={handleCancelDeleteParticipant}
+                    className='is-primary'
+                  />
+                </StyledDeleteButtonsWrapper>
+              </StyledDeleteDiv>
             ) : (
               <div>
                 {isEditing.includes(participant._id) ? (
-                  <>
+                  <StyledButtonaContainer>
                     <Button
                       text='Išsaugoti'
                       action={() => handleSaveParticipant(participant._id)}
-                      className='is-responsive is-primary'
+                      className='is-primary'
                     />
                     <Button
                       text='Atšaukti'
                       action={() =>
                         handleCancelEditParticipant(participant._id)
                       }
-                      className='is-responsive is-danger is-outlined'
+                      className='is-danger is-outlined'
                     />
-                  </>
+                  </StyledButtonaContainer>
                 ) : (
-                  <>
+                  <StyledButtonaContainer>
                     <Button
                       text='Redaguoti'
                       action={() => handleEditParticipant(participant._id)}
-                      className='is-responsive is-primary is-outlined'
+                      className='is-primary is-outlined'
                     />
                     <Button
                       text='Ištrinti'
                       action={() =>
                         handleConfirmDeleteParticipant(participant._id)
                       }
-                      className='is-responsive is-danger is-outlined'
+                      className='is-danger is-outlined'
                     />
-                  </>
+                  </StyledButtonaContainer>
                 )}
               </div>
             )}
@@ -291,12 +301,12 @@ const TableRow = () => {
 
       <Modal isOpen={success} onClose={handleDeleteSuccessModalClose}>
         <div>
-          <p>Vartotojas ištrintas sėkmingai!</p>
+          <StyledPTag>Vartotojas ištrintas sėkmingai!</StyledPTag>
         </div>
       </Modal>
 
-      <div>{generatePagination()}</div>
-    </div>
+      <StyledPage>{generatePagination()}</StyledPage>
+    </>
   );
 };
 

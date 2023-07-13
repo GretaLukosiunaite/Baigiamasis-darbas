@@ -30,13 +30,13 @@ const Header = ({ searchValue, setSearchValue }: ISearchProps) => {
         value={searchValue}
         setValue={setSearchValue}
         icon={ICONS.search}
-        placeholder='Search'
+        placeholder='Paieška'
         className={'is-primary is-success'}
       />
       <Button
         text='Pridėti naują'
         action={handleButtonClick}
-        className='is-responsive is-primary modal-trigger'
+        className='is-primary modal-trigger'
       />
       {isModalOpen && (
         <Modal onClose={handleCloseModal} isOpen={isModalOpen}>

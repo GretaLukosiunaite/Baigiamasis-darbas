@@ -1,37 +1,37 @@
 import React, { useState } from 'react';
 import TableRow from '../../molecules/TableRow';
 import {
-  StyledHeadlineContainer,
-  StyledHeadlineRow,
-  StyledTable,
+  StyledDataContainer,
+  StyledTableRow,
 } from '../../molecules/TableRow/styles';
+import { StyledTable, StyledTableWrapper } from './styles';
 
 const Table = () => {
   const [searchValue, setSearchValue] = useState('');
 
   return (
-    <div>
-      <StyledTable>
-        <StyledHeadlineRow>
-          <StyledHeadlineContainer className='table-header'>
-            <h6>Name</h6>
-          </StyledHeadlineContainer>
-          <StyledHeadlineContainer className='table-header'>
-            <h6>Lastname</h6>
-          </StyledHeadlineContainer>
-          <StyledHeadlineContainer className='table-header'>
-            <h6>Email</h6>
-          </StyledHeadlineContainer>
-          <StyledHeadlineContainer className='table-header'>
-            <h6>Age</h6>
-          </StyledHeadlineContainer>
-          <StyledHeadlineContainer className='table-header'>
+    <StyledTableWrapper className='box'>
+      <StyledTable className='field'>
+        <StyledTableRow>
+          <StyledDataContainer>
+            <h6>Vardas</h6>
+          </StyledDataContainer>
+          <StyledDataContainer>
+            <h6>Pavardė</h6>
+          </StyledDataContainer>
+          <StyledDataContainer>
+            <h6>El. paštas</h6>
+          </StyledDataContainer>
+          <StyledDataContainer>
+            <h6>Amžius</h6>
+          </StyledDataContainer>
+          <StyledDataContainer>
             <h6></h6>
-          </StyledHeadlineContainer>
-        </StyledHeadlineRow>
+          </StyledDataContainer>
+        </StyledTableRow>
         <TableRow searchValue={searchValue} />
       </StyledTable>
-    </div>
+    </StyledTableWrapper>
   );
 };
 
