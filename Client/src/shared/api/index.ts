@@ -15,6 +15,7 @@ httpClient.interceptors.response.use(
 export default httpClient;
 
 class Api_instance {
+  [x: string]: any;
   private participants: string;
 
   constructor() {
