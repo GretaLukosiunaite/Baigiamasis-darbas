@@ -23,10 +23,6 @@ const Header = ({ searchValue, setSearchValue }: ISearchProps) => {
     setIsModalOpen(false);
   };
 
-  const handleParticipantAdded = (participant: IParticipant) => {
-    setIsModalOpen(false); // Close the modal after participant is added
-    // You can perform any other logic here, if needed
-  };
   return (
     <StyledHeader>
       <InputSearch
@@ -44,7 +40,7 @@ const Header = ({ searchValue, setSearchValue }: ISearchProps) => {
       />
       {isModalOpen && (
         <Modal onClose={handleCloseModal} isOpen={isModalOpen}>
-          <Form onParticipantAdded={handleParticipantAdded} />
+          <Form/>
         </Modal>
       )}
     </StyledHeader>

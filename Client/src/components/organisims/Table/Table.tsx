@@ -5,24 +5,9 @@ import {
   StyledHeadlineRow,
   StyledTable,
 } from '../../molecules/TableRow/styles';
-import Modal from '../../atoms/Modal';
-import { API } from '../../../shared/api';
 
 const Table = () => {
   const [searchValue, setSearchValue] = useState('');
-
-  // useEffect(() => {
-  //   const fetchfetchParticipantsData = async () => {
-  //     try {
-  //       const fetchedParticipants = await API.getItems();
-  //       setParticipants(fetchedParticipants);
-  //     } catch (error) {
-  //       console.error('Error:', error);
-  //     }
-  //   };
-  //   fetchParticipants();
-  // }, []);
-
 
   return (
     <div>

@@ -21,7 +21,7 @@ const TableRow = () => {
 
   useEffect(() => {
     fetchParticipants();
-  }, [isEditing]);
+  }, []); //cia idejus participants lentele atsinaujina automatiskai, bet nebeveikia redagavimas
 
   const fetchParticipants = async () => {
     try {
@@ -145,21 +145,6 @@ const TableRow = () => {
         </Button>
       ));
   };
-
-  const filteredParticipants = participants.filter((participant) => {
-    const searchLower = searchValue.toLowerCase();
-    const name = participant.name.toLowerCase();
-    const lastname = participant.lastname.toLowerCase();
-    const email = participant.email.toLowerCase();
-    const age = participant.age.toString();
-
-    return (
-      name.toLowerCase().includes(searchLower) ||
-      lastname.toLowerCase().includes(searchLower)  ||
-      email.includes(searchLower) ||
-      age.includes(searchLower)
-    );
-  });
 
   return (
     <div>

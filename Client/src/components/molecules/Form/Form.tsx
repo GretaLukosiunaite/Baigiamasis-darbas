@@ -4,11 +4,7 @@ import { API } from '../../../shared/api';
 import { IParticipant } from '../../../shared/api/types';
 import { useState } from 'react';
 
-interface FormProps {
-  onParticipantAdded: (participant: IParticipant) => void;
-}
-
-const Form = ({ onParticipantAdded }: FormProps) => {
+const Form = () => {
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');

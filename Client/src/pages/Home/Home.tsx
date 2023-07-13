@@ -9,35 +9,18 @@ const Home = () => {
   const [participants, setParticipants] = useState<IParticipant[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
-  // useEffect(() => {
-  //   const fetchParticipants = async () => {
-  //     try {
-  //       const fetchedParticipants = await API.getParticipants();
-  //       setParticipants(fetchedParticipants);
-  //     } catch (error) {
-  //       console.error('Error fetching participants:', error);
-  //     }
-  //   };
-
-  //   fetchParticipants();
-  // }, [participants]); // Include participants in the dependency array
-
   useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        const fetchedParticipants = await API.getParticipants();
+        setParticipants(fetchedParticipants);
+      } catch (error) {
+        console.error('Error fetching participants:', error);
+      }
+    };
+
     fetchParticipants();
-  }, [participants]);
-
-  const fetchParticipants = async () => {
-    try {
-      const fetchedParticipants = await API.getParticipants();
-      setParticipants(fetchedParticipants);
-    } catch (error) {
-      console.error('Error fetching participants:', error);
-    }
-  };
-
-  const handleParticipantAdded = (participant: IParticipant) => {
-    setParticipants((prevParticipants) => [...prevParticipants, participant]);
-  };
+  }, []);
 
   const filteredParticipants = participants.filter((participant) => {
     const searchLower = searchValue.toLowerCase();
@@ -58,7 +41,7 @@ const Home = () => {
     <div>
       <Header searchValue={searchValue} setSearchValue={setSearchValue} />
       {filteredParticipants.length > 0 ? (
-        <Table participants={filteredParticipants} />
+        <Table/>
       ) : (
         <p>Nėra rezultatų</p>
       )}
