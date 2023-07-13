@@ -31,14 +31,13 @@ const Form = () => {
 
       setSuccess(true);
       setError('');
+
+      // Call the callback function to notify the parent component
+      onParticipantAdded(participantData);
     } catch (error) {
       console.error('Error adding participant:', error);
       setError('Vartotojo pridėti nepavyko. Užpildykite visus laukus!');
     }
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
   };
 
   return (
@@ -70,7 +69,7 @@ const Form = () => {
             type='email'
             value={email}
             setValue={setEmail}
-            placeholder='elektorinisipastas@email.com'
+            placeholder='El.paštas'
           />
           <Input
             labelText='Amžius'
@@ -78,7 +77,7 @@ const Form = () => {
             type='number'
             value={age}
             setValue={setAge}
-            placeholder='18'
+            placeholder='Amžius'
           />
           <Button
             text='Pridėti naują'

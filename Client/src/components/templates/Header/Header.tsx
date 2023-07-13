@@ -5,14 +5,14 @@ import Modal from '../../atoms/Modal';
 import Form from '../../molecules/Form';
 import InputSearch from '../../atoms/InputSearch';
 import ICONS from '../../../assets/icons';
+import { IParticipant } from '../../../shared/api/types';
 
 interface ISearchProps {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>> | (() => void);
 }
 
-
-const Header = ( {searchValue, setSearchValue}: ISearchProps) => {
+const Header = ({ searchValue, setSearchValue }: ISearchProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleButtonClick = () => {
@@ -30,8 +30,9 @@ const Header = ( {searchValue, setSearchValue}: ISearchProps) => {
         value={searchValue}
         setValue={setSearchValue}
         icon={ICONS.search}
-        placeholder='Search' 
-        className={'is-primary is-success'}      />
+        placeholder='Search'
+        className={'is-primary is-success'}
+      />
       <Button
         text='Pridėti naują'
         action={handleButtonClick}
@@ -39,7 +40,7 @@ const Header = ( {searchValue, setSearchValue}: ISearchProps) => {
       />
       {isModalOpen && (
         <Modal onClose={handleCloseModal} isOpen={isModalOpen}>
-          <Form />
+          <Form/>
         </Modal>
       )}
     </StyledHeader>
