@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/await-thenable */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
 import Button from '../../atoms/Button';
 import {
@@ -30,10 +30,18 @@ const TableRow = ({
   const [deletedParticipantId, setDeletedParticipantId] = useState('');
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
     useState(false);
-  const [isEditing, setIsEditing] = useState<string[]>([]);
+  const [isEditing, setIsEditing] = useState<(string | undefined)[]>([]);
   const [success, setSuccess] = useState(false);
   const [originalParticipantData, setOriginalParticipantData] =
     useState<IParticipant[]>(participants);
+  const [editedParticipantData, setEditedParticipantData] = useState<
+    IParticipant[]
+  >([]);
+
+  useEffect(() => {
+    // Store the original participant data when the participants change
+    setOriginalParticipantData(participants);
+  }, [participants]);
 
   const handleConfirmDeleteParticipant = (participantId: string) => {
     setDeletedParticipantId(participantId);
@@ -58,6 +66,14 @@ const TableRow = ({
 
   const handleEditParticipant = (participantId: string) => {
     setIsEditing((prevEditing) => [...prevEditing, participantId]);
+    // Find the participant being edited
+    const participant = participants.find(
+      (participant) => participant._id === participantId
+    );
+    if (participant) {
+      // Create a copy of the participant and store it in editedParticipantData state
+      setEditedParticipantData((prevData) => [...prevData, { ...participant }]);
+    }
   };
 
   const handleSaveParticipant = (participantId: string) => {
@@ -65,7 +81,9 @@ const TableRow = ({
       (participant) => participant._id === participantId
     );
 
-    onUpdateParticipant(participantId, updatedParticipantData);
+    if (updatedParticipantData) {
+      onUpdateParticipant(participantId, updatedParticipantData);
+    }
 
     setIsEditing((prevEditing) =>
       prevEditing.filter((id) => id !== participantId)
@@ -76,12 +94,16 @@ const TableRow = ({
     setIsEditing((prevEditing) =>
       prevEditing.filter((id) => id !== participantId)
     );
-    // Revert the participant data to its original value
-    const originalData = originalParticipantData.find(
+    // Find the participant being edited in the editedParticipantData state
+    const editedParticipant = editedParticipantData.find(
       (participant) => participant._id === participantId
     );
-    if (originalData) {
-      onUpdateParticipant(participantId, originalData);
+    if (editedParticipant) {
+      // Replace the participant data with the original data
+      onUpdateParticipant(participantId, editedParticipant);
+      setEditedParticipantData((prevData) =>
+        prevData.filter((participant) => participant._id !== participantId)
+      );
     }
   };
 
@@ -102,7 +124,7 @@ const TableRow = ({
                       ...participant,
                       name: e.target.value,
                     };
-                    onUpdateParticipant(participant._id, updatedData);
+                    onUpdateParticipant(participant._id || '', updatedData);
                   }}
                 />
               ) : (
@@ -121,7 +143,7 @@ const TableRow = ({
                       ...participant,
                       lastname: e.target.value,
                     };
-                    onUpdateParticipant(participant._id, updatedData);
+                    onUpdateParticipant(participant._id || '', updatedData);
                   }}
                 />
               ) : (
@@ -140,7 +162,7 @@ const TableRow = ({
                       ...participant,
                       email: e.target.value,
                     };
-                    onUpdateParticipant(participant._id, updatedData);
+                    onUpdateParticipant(participant._id || '', updatedData);
                   }}
                 />
               ) : (
@@ -156,7 +178,7 @@ const TableRow = ({
                   value={participant.age}
                   onChange={(e) => {
                     const updatedData = { ...participant, age: e.target.value };
-                    onUpdateParticipant(participant._id, updatedData);
+                    onUpdateParticipant(participant._id || '', updatedData);
                   }}
                 />
               ) : (
@@ -172,7 +194,9 @@ const TableRow = ({
                   <StyledDeleteButtonsWrapper>
                     <Button
                       text='Taip'
-                      action={() => handleDeleteParticipant(participant._id)}
+                      action={() =>
+                        handleDeleteParticipant(participant._id || '')
+                      }
                       className='is-danger is-outlined'
                     />
                     <Button
@@ -188,13 +212,15 @@ const TableRow = ({
                     <StyledButtonaContainer>
                       <Button
                         text='Išsaugoti'
-                        action={() => handleSaveParticipant(participant._id)}
+                        action={() =>
+                          handleSaveParticipant(participant._id || '')
+                        }
                         className='is-primary'
                       />
                       <Button
                         text='Atšaukti'
                         action={() =>
-                          handleCancelEditParticipant(participant._id)
+                          handleCancelEditParticipant(participant._id || '')
                         }
                         className='is-danger is-outlined'
                       />
@@ -203,13 +229,15 @@ const TableRow = ({
                     <StyledButtonaContainer>
                       <Button
                         text='Redaguoti'
-                        action={() => handleEditParticipant(participant._id)}
+                        action={() =>
+                          handleEditParticipant(participant._id || '')
+                        }
                         className='is-primary is-outlined'
                       />
                       <Button
                         text='Ištrinti'
                         action={() =>
-                          handleConfirmDeleteParticipant(participant._id)
+                          handleConfirmDeleteParticipant(participant._id || '')
                         }
                         className='is-danger is-outlined'
                       />
