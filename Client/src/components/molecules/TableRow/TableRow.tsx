@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
 import Button from '../../atoms/Button';
 import {
@@ -11,15 +11,6 @@ import {
 import Modal from '../../atoms/Modal';
 import { StyledPTag } from '../Form/styles';
 
-interface ITableRowProps {
-  participants: IParticipant[];
-  onDeleteParticipant: (participantId: string) => void;
-  onUpdateParticipant: (
-    participantId: string,
-    updatedData: IParticipant
-  ) => void;
-}
-
 const TableRow = ({
   participants,
   onDeleteParticipant,
@@ -30,6 +21,8 @@ const TableRow = ({
     useState(false);
   const [isEditing, setIsEditing] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
+  const [originalParticipantData, setOriginalParticipantData] =
+    useState<IParticipant[]>(participants);
 
   const handleConfirmDeleteParticipant = (participantId: string) => {
     setDeletedParticipantId(participantId);
@@ -72,131 +65,147 @@ const TableRow = ({
     setIsEditing((prevEditing) =>
       prevEditing.filter((id) => id !== participantId)
     );
+    // Revert the participant data to its original value
+    const originalData = originalParticipantData.find(
+      (participant) => participant._id === participantId
+    );
+    if (originalData) {
+      onUpdateParticipant(participantId, originalData);
+    }
   };
 
   return (
     <>
-      {participants.map((participant) => (
-        <StyledTableRow key={participant._id}>
-          <StyledDataContainer>
-            {isEditing.includes(participant._id) ? (
-              <input
-                type='text'
-                value={participant.name}
-                onChange={(e) => {
-                  const updatedData = { ...participant, name: e.target.value };
-                  onUpdateParticipant(participant._id, updatedData);
-                }}
-              />
-            ) : (
-              <p>{participant.name}</p>
-            )}
-          </StyledDataContainer>
+      {participants.map((participant) => {
+        const isParticipantEditing = isEditing.includes(participant._id);
+        return (
+          <StyledTableRow key={participant._id}>
+            <StyledDataContainer>
+              {isParticipantEditing ? (
+                <input
+                  type='text'
+                  value={participant.name}
+                  onChange={(e) => {
+                    const updatedData = {
+                      ...participant,
+                      name: e.target.value,
+                    };
+                    onUpdateParticipant(participant._id, updatedData);
+                  }}
+                />
+              ) : (
+                <p>{participant.name}</p>
+              )}
+            </StyledDataContainer>
 
-          <StyledDataContainer>
-            {isEditing.includes(participant._id) ? (
-              <input
-                type='text'
-                value={participant.lastname}
-                onChange={(e) => {
-                  const updatedData = {
-                    ...participant,
-                    lastname: e.target.value,
-                  };
-                  onUpdateParticipant(participant._id, updatedData);
-                }}
-              />
-            ) : (
-              <p>{participant.lastname}</p>
-            )}
-          </StyledDataContainer>
+            <StyledDataContainer>
+              {isParticipantEditing ? (
+                <input
+                  type='text'
+                  value={participant.lastname}
+                  onChange={(e) => {
+                    const updatedData = {
+                      ...participant,
+                      lastname: e.target.value,
+                    };
+                    onUpdateParticipant(participant._id, updatedData);
+                  }}
+                />
+              ) : (
+                <p>{participant.lastname}</p>
+              )}
+            </StyledDataContainer>
 
-          <StyledDataContainer>
-            {isEditing.includes(participant._id) ? (
-              <input
-                type='text'
-                value={participant.email}
-                onChange={(e) => {
-                  const updatedData = { ...participant, email: e.target.value };
-                  onUpdateParticipant(participant._id, updatedData);
-                }}
-              />
-            ) : (
-              <p>{participant.email}</p>
-            )}
-          </StyledDataContainer>
+            <StyledDataContainer>
+              {isParticipantEditing ? (
+                <input
+                  type='text'
+                  value={participant.email}
+                  onChange={(e) => {
+                    const updatedData = {
+                      ...participant,
+                      email: e.target.value,
+                    };
+                    onUpdateParticipant(participant._id, updatedData);
+                  }}
+                />
+              ) : (
+                <p>{participant.email}</p>
+              )}
+            </StyledDataContainer>
 
-          <StyledDataContainer>
-            {isEditing.includes(participant._id) ? (
-              <input
-                type='text'
-                value={participant.age}
-                onChange={(e) => {
-                  const updatedData = { ...participant, age: e.target.value };
-                  onUpdateParticipant(participant._id, updatedData);
-                }}
-              />
-            ) : (
-              <p>{participant.age}</p>
-            )}
-          </StyledDataContainer>
+            <StyledDataContainer>
+              {isParticipantEditing ? (
+                <input
+                  type='text'
+                  value={participant.age}
+                  onChange={(e) => {
+                    const updatedData = { ...participant, age: e.target.value };
+                    onUpdateParticipant(participant._id, updatedData);
+                  }}
+                />
+              ) : (
+                <p>{participant.age}</p>
+              )}
+            </StyledDataContainer>
 
-          <StyledDataContainer>
-            {isDeleteConfirmationVisible &&
-            participant._id === deletedParticipantId ? (
-              <StyledDeleteDiv>
-                <p>Ar tikrai norite ištrinti?</p>
-                <StyledDeleteButtonsWrapper>
-                  <Button
-                    text='Taip'
-                    action={() => handleDeleteParticipant(participant._id)}
-                    className='is-danger is-outlined'
-                  />
-                  <Button
-                    text='Atšaukti'
-                    action={handleCancelDeleteParticipant}
-                    className='is-primary'
-                  />
-                </StyledDeleteButtonsWrapper>
-              </StyledDeleteDiv>
-            ) : (
-              <div>
-                {isEditing.includes(participant._id) ? (
-                  <StyledButtonaContainer>
+            <StyledDataContainer>
+              {isDeleteConfirmationVisible &&
+              participant._id === deletedParticipantId ? (
+                <StyledDeleteDiv>
+                  <p>Ar tikrai norite ištrinti?</p>
+                  <StyledDeleteButtonsWrapper>
                     <Button
-                      text='Išsaugoti'
-                      action={() => handleSaveParticipant(participant._id)}
-                      className='is-primary'
+                      text='Taip'
+                      action={() => handleDeleteParticipant(participant._id)}
+                      className='is-danger is-outlined'
                     />
                     <Button
                       text='Atšaukti'
-                      action={() =>
-                        handleCancelEditParticipant(participant._id)
-                      }
-                      className='is-danger is-outlined'
+                      action={handleCancelDeleteParticipant}
+                      className='is-primary'
                     />
-                  </StyledButtonaContainer>
-                ) : (
-                  <StyledButtonaContainer>
-                    <Button
-                      text='Redaguoti'
-                      action={() => handleEditParticipant(participant._id)}
-                      className='is-primary is-outlined'
-                    />
-                    <Button
-                      text='Ištrinti'
-                      action={() =>
-                        handleConfirmDeleteParticipant(participant._id)
-                      }
-                      className='is-danger is-outlined'
-                    />
-                  </StyledButtonaContainer>
-                )}
-              </div>
-            )}
-          </StyledDataContainer>
-        </StyledTableRow>
-      ))}
+                  </StyledDeleteButtonsWrapper>
+                </StyledDeleteDiv>
+              ) : (
+                <div>
+                  {isParticipantEditing ? (
+                    <StyledButtonaContainer>
+                      <Button
+                        text='Išsaugoti'
+                        action={() => handleSaveParticipant(participant._id)}
+                        className='is-primary'
+                      />
+                      <Button
+                        text='Atšaukti'
+                        action={() =>
+                          handleCancelEditParticipant(participant._id)
+                        }
+                        className='is-danger is-outlined'
+                      />
+                    </StyledButtonaContainer>
+                  ) : (
+                    <StyledButtonaContainer>
+                      <Button
+                        text='Redaguoti'
+                        action={() => handleEditParticipant(participant._id)}
+                        className='is-primary is-outlined'
+                      />
+                      <Button
+                        text='Ištrinti'
+                        action={() =>
+                          handleConfirmDeleteParticipant(participant._id)
+                        }
+                        className='is-danger is-outlined'
+                      />
+                    </StyledButtonaContainer>
+                  )}
+                </div>
+              )}
+            </StyledDataContainer>
+          </StyledTableRow>
+        );
+      })}
 
       <Modal isOpen={success} onClose={() => setSuccess(false)}>
         <div>
