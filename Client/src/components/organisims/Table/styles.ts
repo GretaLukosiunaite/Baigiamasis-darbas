@@ -2,13 +2,14 @@ import { styled } from 'styled-components';
 
 export const StyledTableWrapper = styled.div`
    display: flex;
-  align-items: flex-start;
+   flex-direction: column;
+  justify-content: flex-start;
   overflow: auto;
   max-width: 1280px;
   width: 100%;
 
   @media (min-width: 1024px) {
-    align-items: center;
+    justify-content: center;
   }
 `;
 
