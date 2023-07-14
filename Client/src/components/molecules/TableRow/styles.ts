@@ -51,8 +51,8 @@ export const StyledDataContainer = styled.div`
     word-wrap: break-word;
   }
 
-  input{
-    margin-right: 0.5em;
+  input {
+    width: 96%;
   }
 
   &:nth-child(1) {
@@ -90,19 +90,18 @@ export const StyledButtonaContainer = styled.div`
   padding: 0.5em 0.75em;
 `;
 
-
 export const StyledDeleteDiv = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 
-p{
-  padding-right: 0;
-}
-`
+  p {
+    padding-right: 0;
+  }
+`;
 
 export const StyledDeleteButtonsWrapper = styled.div`
-display: flex;
-gap: 0.5rem;
-`
+  display: flex;
+  gap: 0.5rem;
+`;

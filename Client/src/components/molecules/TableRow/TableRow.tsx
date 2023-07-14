@@ -11,6 +11,15 @@ import {
 import Modal from '../../atoms/Modal';
 import { StyledPTag } from '../Form/styles';
 
+interface ITableRowProps {
+  participants: IParticipant[];
+  onDeleteParticipant: (participantId: string) => void;
+  onUpdateParticipant: (
+    participantId: string,
+    updatedData: IParticipant
+  ) => void;
+}
+
 const TableRow = ({
   participants,
   onDeleteParticipant,
@@ -83,6 +92,7 @@ const TableRow = ({
             <StyledDataContainer>
               {isParticipantEditing ? (
                 <input
+                  className='input is-primary'
                   type='text'
                   value={participant.name}
                   onChange={(e) => {
@@ -101,6 +111,7 @@ const TableRow = ({
             <StyledDataContainer>
               {isParticipantEditing ? (
                 <input
+                  className='input is-primary'
                   type='text'
                   value={participant.lastname}
                   onChange={(e) => {
@@ -119,6 +130,7 @@ const TableRow = ({
             <StyledDataContainer>
               {isParticipantEditing ? (
                 <input
+                  className='input is-primary'
                   type='text'
                   value={participant.email}
                   onChange={(e) => {
@@ -137,6 +149,7 @@ const TableRow = ({
             <StyledDataContainer>
               {isParticipantEditing ? (
                 <input
+                  className='input is-primary'
                   type='text'
                   value={participant.age}
                   onChange={(e) => {
