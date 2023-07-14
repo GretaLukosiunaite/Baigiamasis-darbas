@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
 export const StyledTableWrapper = styled.div`
-   display: flex;
-   flex-direction: column;
+  display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   overflow: auto;
   max-width: 1280px;
@@ -17,6 +17,8 @@ export const StyledTable = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 1280px;
+  height: 100%;
+
 
   justify-content: center;
   width: 100%;

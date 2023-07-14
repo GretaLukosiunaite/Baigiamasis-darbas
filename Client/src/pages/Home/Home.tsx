@@ -11,23 +11,26 @@ const Home = () => {
   const [searchValue, setSearchValue] = useState('');
 
   useEffect(() => {
-    const fetchParticipants = async () => {
-      try {
-        const fetchedParticipantsData = await API.getParticipants();
-        setParticipants(fetchedParticipantsData);
-      } catch (error) {
-        console.error('Error getting participants:', error);
-      }
-    };
+   
     fetchParticipants();
   }, []);
 
-  const participantAddedLogic = (participant: IParticipant) => {
-    // Add the new participant to the participants list
-    setParticipants((prevParticipants) => [...prevParticipants, participant]);
+  const fetchParticipants = async () => {
+    try {
+      const fetchedParticipantsData = await API.getParticipants();
+      setParticipants(fetchedParticipantsData);
+    } catch (error) {
+      console.error('Error getting participants:', error);
+    }
   };
 
-  const deleteParticipantLogic = async (participantId: string) => {
+  const participantAdded = (participant: IParticipant) => {
+    // Add the new participant to the participants list
+    setParticipants((prevParticipants) => [...prevParticipants, participant]);
+    fetchParticipants();
+  };
+
+  const handleDeleteParticipant = async (participantId: string) => {
     try {
       await API.deleteParticipant(participantId);
       // Remove the deleted participant from the participants list
@@ -41,7 +44,7 @@ const Home = () => {
     }
   };
 
-  const updateParticipantLogic = async (
+  const handleUpdateParticipant = async (
     participantId: string,
     updatedData: IParticipant
   ) => {
@@ -78,13 +81,14 @@ const Home = () => {
       <Header
         searchValue={searchValue}
         setSearchValue={setSearchValue}
-        onParticipantAdded={participantAddedLogic}
+        onParticipantAdded={participantAdded}
       />
       {filteredParticipants.length > 0 ? (
         <Table
+          key='table'
           participants={filteredParticipants}
-          onDeleteParticipant={deleteParticipantLogic}
-          onUpdateParticipant={updateParticipantLogic}
+          onDeleteParticipant={handleDeleteParticipant}
+          onUpdateParticipant={handleUpdateParticipant}
         />
       ) : (
         <p className='box'>Nėra rezultatų</p>
