@@ -49,7 +49,7 @@ const TableRow = () => {
     try {
       await API.deleteParticipant(participantId);
       // Fetch participants again to update the table
-      // fetchParticipants();
+      fetchParticipants();
       setIsDeleteConfirmationVisible(false);
       setDeletedParticipantId('');
       setSuccess(true);
@@ -79,7 +79,7 @@ const TableRow = () => {
       await API.updateParticipant(participantId, updatedParticipantData);
 
       // Fetch participants again to update the table
-      // fetchParticipants();
+       //fetchParticipants();
 
       // Exit editing mode for the participant
       setIsEditing((prevEditing) =>
