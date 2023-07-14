@@ -7,19 +7,20 @@ import InputSearch from '../../atoms/InputSearch';
 import ICONS from '../../../assets/icons';
 import { IParticipant } from '../../../shared/api/types';
 
-interface ISearchProps {
+interface IHeaderAndSearchProps {
   searchValue: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>> | (() => void);
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  onParticipantAdded: (participant: IParticipant) => void;
 }
 
-const Header = ({ searchValue, setSearchValue }: ISearchProps) => {
+const Header = ({ searchValue, setSearchValue, onParticipantAdded }: IHeaderAndSearchProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleButtonClick = () => {
+  const buttonClick = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
   };
 
@@ -35,12 +36,12 @@ const Header = ({ searchValue, setSearchValue }: ISearchProps) => {
       />
       <Button
         text='Pridėti naują'
-        action={handleButtonClick}
+        action={buttonClick}
         className='is-primary modal-trigger'
       />
       {isModalOpen && (
-        <Modal onClose={handleCloseModal} isOpen={isModalOpen}>
-          <Form/>
+        <Modal onClose={closeModal} isOpen={isModalOpen}>
+          <Form onParticipantAdded={onParticipantAdded}/>
         </Modal>
       )}
     </StyledHeader>
