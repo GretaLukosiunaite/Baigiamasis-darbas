@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-// import { StyledModalContentWrapper } from './styles';
+import React, { useEffect} from 'react';
+
 
 interface IModalProps {
   onClose: () => void;
