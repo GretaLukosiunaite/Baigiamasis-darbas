@@ -22,7 +22,7 @@ The frontend server will be running at http://localhost:5173.
 
 #### Terminal two:
 
-- Go to Server folder - command `cd Server`
+- Navigate to the Server folder - command `cd Server`
 - Install node_modules - command `npm ci` or `npm install`
 - Split terminal into two terminal windows
 - In one terminal start server - command `npm run dev`
