@@ -5,5 +5,4 @@ export const StyledFooter = styled.footer`
   justify-content: center;
   /* Bulma standart */
   padding: 3rem 1.5rem 6rem;
-  /* padding: 3rem 1.5rem; */
 `;

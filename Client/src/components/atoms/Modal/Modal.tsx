@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 
 
 interface IModalProps {
@@ -13,33 +13,31 @@ const Modal = ({ onClose, isOpen, children }: IModalProps) => {
       onClose();
     }
 
-    function handleModalCloseClick(event) {
-      const $target = event.target.closest('.modal');
-      closeModal($target);
-    }
-
-    function handleKeyDown(event) {
-      if (event.keyCode === 27) {
-        closeAllModals();
+    function handleModalCloseClick(event: MouseEvent) {
+      const target = (event.target as HTMLElement).closest('.modal');
+      if (target) {
+        closeModal();
       }
     }
 
-    document
-      .querySelectorAll('.modal-close, .modal-background')
-      .forEach(($close) => {
-        $close.addEventListener('click', handleModalCloseClick);
-      });
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.keyCode === 27) {
+        closeModal();
+      }
+    }
+
+    [...document.querySelectorAll('.modal-close, .modal-background')].forEach((close) => {
+      close.addEventListener('click', handleModalCloseClick as EventListener);
+    });
 
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document
-        .querySelectorAll('.modal-close, .modal-background')
-        .forEach(($close) => {
-          $close.removeEventListener('click', handleModalCloseClick);
-        });
-
-      document.removeEventListener('keydown', handleKeyDown);
+      [...document.querySelectorAll('.modal-close, .modal-background')].forEach((close) => {
+        close.removeEventListener('click', handleModalCloseClick as EventListener);
+      });
+      
+      document.removeEventListener('keydown', handleKeyDown as EventListener);
     };
   }, [onClose]);
 

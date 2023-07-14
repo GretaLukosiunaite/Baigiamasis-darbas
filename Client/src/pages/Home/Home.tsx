@@ -27,7 +27,6 @@ const Home = () => {
   };
 
   const participantAdded = (participant: IParticipant) => {
-    // Add the new participant to the participants list
     setParticipants((prevParticipants) => [...prevParticipants, participant]);
     fetchParticipants();
   };
@@ -35,7 +34,6 @@ const Home = () => {
   const handleDeleteParticipant = async (participantId: string) => {
     try {
       await API.deleteParticipant(participantId);
-      // Remove the deleted participant from the participants list
       setParticipants((prevParticipants) =>
         prevParticipants.filter(
           (participant) => participant._id !== participantId
@@ -52,7 +50,6 @@ const Home = () => {
   ) => {
     try {
       await API.updateParticipant(participantId, updatedData);
-      // Update the participant in the participants list
       setParticipants((prevParticipants) =>
         prevParticipants.map((participant) =>
           participant._id === participantId ? updatedData : participant
