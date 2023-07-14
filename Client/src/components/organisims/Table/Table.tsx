@@ -56,7 +56,7 @@ const Table = ({
           text={x.toString()}
           action={() => setCurrentPage(x)}
           className={currentPage === x ? 'active is-primary' : ''}
-        >{x}</Button>
+        />
       ));
   };
 

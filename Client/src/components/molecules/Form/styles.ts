@@ -11,7 +11,7 @@ export const StyledForm = styled.div`
     grid-row-gap: 0.75rem;
 
     .field {
-      width: 100%;
+      width: 100% !important;
     }
   }
 `;
