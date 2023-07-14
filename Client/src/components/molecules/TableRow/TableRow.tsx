@@ -1,55 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import  { useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
-import { API } from '../../../shared/api';
 import Button from '../../atoms/Button';
 import {
   StyledButtonaContainer,
   StyledDataContainer,
   StyledDeleteButtonsWrapper,
   StyledDeleteDiv,
-  StyledPage,
   StyledTableRow,
 } from './styles';
 import Modal from '../../atoms/Modal';
 import { StyledPTag } from '../Form/styles';
 
-const TableRow = () => {
-  const [participants, setParticipants] = useState<IParticipant[]>([]);
+interface ITableRowProps {
+  participants: IParticipant[];
+  onDeleteParticipant: (participantId: string) => void;
+  onUpdateParticipant: (
+    participantId: string,
+    updatedData: IParticipant
+  ) => void;
+}
+
+const TableRow = ({
+  participants,
+  onDeleteParticipant,
+  onUpdateParticipant,
+}: ITableRowProps) => {
   const [deletedParticipantId, setDeletedParticipantId] = useState('');
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] =
     useState(false);
-
   const [isEditing, setIsEditing] = useState<string[]>([]);
   const [success, setSuccess] = useState(false);
 
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [searchValue, setSearchValue] = useState('');
-
-  useEffect(() => {
-    fetchParticipants();
-  }, []); //cia idejus participants lentele atsinaujina automatiskai, bet nebeveikia redagavimas
-
-  const fetchParticipants = async () => {
-    try {
-      const fetchedParticipants = await API.getParticipants();
-      setParticipants(fetchedParticipants);
-    } catch (error) {
-      console.error('Error fetching participants:', error);
-    }
-  };
-
-  const handleConfirmDeleteParticipant = (participantId) => {
+  const handleConfirmDeleteParticipant = (participantId: string) => {
     setDeletedParticipantId(participantId);
     setIsDeleteConfirmationVisible(true);
   };
 
-  const handleDeleteParticipant = async (participantId) => {
+  const handleDeleteParticipant = async (participantId: string) => {
     try {
-      await API.deleteParticipant(participantId);
-      // Fetch participants again to update the table
-      fetchParticipants();
+      await onDeleteParticipant(participantId);
       setIsDeleteConfirmationVisible(false);
       setDeletedParticipantId('');
       setSuccess(true);
@@ -67,27 +56,16 @@ const TableRow = () => {
     setIsEditing((prevEditing) => [...prevEditing, participantId]);
   };
 
-  const handleSaveParticipant = async (participantId: string) => {
-    try {
-      const updatedParticipantData = participants.find(
-        (participant) => participant._id === participantId
-      );
+  const handleSaveParticipant = (participantId: string) => {
+    const updatedParticipantData: IParticipant | undefined = participants.find(
+      (participant) => participant._id === participantId
+    );
 
-      // Perform validation on the edited data
+    onUpdateParticipant(participantId, updatedParticipantData);
 
-      // Save the updated participant data
-      await API.updateParticipant(participantId, updatedParticipantData);
-
-      // Fetch participants again to update the table
-       //fetchParticipants();
-
-      // Exit editing mode for the participant
-      setIsEditing((prevEditing) =>
-        prevEditing.filter((id) => id !== participantId)
-      );
-    } catch (error) {
-      console.error('Error saving participant:', error);
-    }
+    setIsEditing((prevEditing) =>
+      prevEditing.filter((id) => id !== participantId)
+    );
   };
 
   const handleCancelEditParticipant = (participantId: string) => {
@@ -96,67 +74,9 @@ const TableRow = () => {
     );
   };
 
-  const handleDeleteSuccessModalClose = () => {
-    setSuccess(false);
-  };
-
-  // const generatePagination = () => {
-  //   const totalPages = Math.ceil(participants.length / itemsPerPage);
-  //   const paginationButtons = [];
-
-  //   for (let i = 1; i <= totalPages; i++) {
-  //     paginationButtons.push(
-  //       <Button
-  //         key={i}
-  //         text={i.toString()}
-  //         action={() => setCurrentPage(i)}
-  //         className={currentPage === i ? 'active' : ''}
-  //       />
-  //     );
-  //   }
-
-  //   return paginationButtons;
-  // };
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, participants.length);
-  const visibleParticipants = participants.slice(startIndex, endIndex);
-
-  const generatePagination = () => {
-    return Array(Math.ceil(participants.length / itemsPerPage))
-      .fill(0)
-      .map((_, i) => i + 1)
-      .filter((x, _, arr) => {
-        if (x === 1) {
-          return x;
-        } else if (x === currentPage) {
-          return x;
-        } else if (
-          x - 1 === currentPage ||
-          x - 2 === currentPage ||
-          x + 1 === currentPage ||
-          x + 2 === currentPage
-        ) {
-          return x;
-        } else if (x === arr.length) {
-          return x;
-        }
-      })
-      .map((x) => (
-        <Button
-          key={x}
-          text={x.toString()}
-          action={() => setCurrentPage(x)}
-          className={currentPage === x ? 'active is-primary' : ''}
-        >
-          {x}
-        </Button>
-      ));
-  };
-
   return (
     <>
-      {visibleParticipants.map((participant) => (
+      {participants.map((participant) => (
         <StyledTableRow key={participant._id}>
           <StyledDataContainer>
             {isEditing.includes(participant._id) ? (
@@ -164,14 +84,8 @@ const TableRow = () => {
                 type='text'
                 value={participant.name}
                 onChange={(e) => {
-                  // Update the participant's name
-                  setParticipants((prevParticipants) =>
-                    prevParticipants.map((prevParticipant) =>
-                      prevParticipant._id === participant._id
-                        ? { ...prevParticipant, name: e.target.value }
-                        : prevParticipant
-                    )
-                  );
+                  const updatedData = { ...participant, name: e.target.value };
+                  onUpdateParticipant(participant._id, updatedData);
                 }}
               />
             ) : (
@@ -185,14 +99,11 @@ const TableRow = () => {
                 type='text'
                 value={participant.lastname}
                 onChange={(e) => {
-                  // Update the participant's lastname
-                  setParticipants((prevParticipants) =>
-                    prevParticipants.map((prevParticipant) =>
-                      prevParticipant._id === participant._id
-                        ? { ...prevParticipant, lastname: e.target.value }
-                        : prevParticipant
-                    )
-                  );
+                  const updatedData = {
+                    ...participant,
+                    lastname: e.target.value,
+                  };
+                  onUpdateParticipant(participant._id, updatedData);
                 }}
               />
             ) : (
@@ -206,14 +117,8 @@ const TableRow = () => {
                 type='text'
                 value={participant.email}
                 onChange={(e) => {
-                  // Update the participant's email
-                  setParticipants((prevParticipants) =>
-                    prevParticipants.map((prevParticipant) =>
-                      prevParticipant._id === participant._id
-                        ? { ...prevParticipant, email: e.target.value }
-                        : prevParticipant
-                    )
-                  );
+                  const updatedData = { ...participant, email: e.target.value };
+                  onUpdateParticipant(participant._id, updatedData);
                 }}
               />
             ) : (
@@ -227,14 +132,8 @@ const TableRow = () => {
                 type='text'
                 value={participant.age}
                 onChange={(e) => {
-                  // Update the participant's age
-                  setParticipants((prevParticipants) =>
-                    prevParticipants.map((prevParticipant) =>
-                      prevParticipant._id === participant._id
-                        ? { ...prevParticipant, age: e.target.value }
-                        : prevParticipant
-                    )
-                  );
+                  const updatedData = { ...participant, age: e.target.value };
+                  onUpdateParticipant(participant._id, updatedData);
                 }}
               />
             ) : (
@@ -299,13 +198,11 @@ const TableRow = () => {
         </StyledTableRow>
       ))}
 
-      <Modal isOpen={success} onClose={handleDeleteSuccessModalClose}>
+      <Modal isOpen={success} onClose={() => setSuccess(false)}>
         <div>
           <StyledPTag>Vartotojas ištrintas sėkmingai!</StyledPTag>
         </div>
       </Modal>
-
-      <StyledPage>{generatePagination()}</StyledPage>
     </>
   );
 };
