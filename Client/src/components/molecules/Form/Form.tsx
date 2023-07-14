@@ -4,14 +4,17 @@ import { API } from '../../../shared/api';
 import { IParticipant } from '../../../shared/api/types';
 import { useState } from 'react';
 import {
-  StyledButtonGrid,
   StyledButtondiv,
   StyledForm,
-  StyledFormRow,
   StyledPTag,
 } from './styles';
 
-const Form = () => {
+
+interface IFormProps {
+  onParticipantAdded: (participant: IParticipant) => void;
+}
+
+const Form = ({ onParticipantAdded }: IFormProps) => {
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
@@ -35,6 +38,9 @@ const Form = () => {
       setLastname('');
       setEmail('');
       setAge('');
+
+      // Call the callback function to inform the parent component about the new participant
+      onParticipantAdded(participantData);
 
       setSuccess(true);
       setError('');
