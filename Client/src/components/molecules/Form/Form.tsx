@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import Input from '../../atoms/Input';
 import Button from '../../atoms/Button';
 import { API } from '../../../shared/api';
