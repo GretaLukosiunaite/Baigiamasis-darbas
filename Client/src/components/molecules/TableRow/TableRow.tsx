@@ -39,7 +39,6 @@ const TableRow = ({
   >([]);
 
   useEffect(() => {
-    // Store the original participant data when the participants change
     setOriginalParticipantData(participants);
   }, [participants]);
 
@@ -66,12 +65,10 @@ const TableRow = ({
 
   const handleEditParticipant = (participantId: string) => {
     setIsEditing((prevEditing) => [...prevEditing, participantId]);
-    // Find the participant being edited
     const participant = participants.find(
       (participant) => participant._id === participantId
     );
     if (participant) {
-      // Create a copy of the participant and store it in editedParticipantData state
       setEditedParticipantData((prevData) => [...prevData, { ...participant }]);
     }
   };
@@ -94,12 +91,10 @@ const TableRow = ({
     setIsEditing((prevEditing) =>
       prevEditing.filter((id) => id !== participantId)
     );
-    // Find the participant being edited in the editedParticipantData state
     const editedParticipant = editedParticipantData.find(
       (participant) => participant._id === participantId
     );
     if (editedParticipant) {
-      // Replace the participant data with the original data
       onUpdateParticipant(participantId, editedParticipant);
       setEditedParticipantData((prevData) =>
         prevData.filter((participant) => participant._id !== participantId)
@@ -179,7 +174,7 @@ const TableRow = ({
                   onChange={(e) => {
                     const updatedData = {
                       ...participant,
-                      age: parseInt(e.target.value), // Convert to number
+                      age: parseInt(e.target.value),
                     };
                     onUpdateParticipant(participant._id || '', updatedData);
                   }}

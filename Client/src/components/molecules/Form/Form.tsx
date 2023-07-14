@@ -34,13 +34,12 @@ const Form = ({ onParticipantAdded }: IFormProps) => {
       };
 
       await API.addParticipant(participantData);
-      // Clear the form after adding the participant
+
       setName('');
       setLastname('');
       setEmail('');
       setAge('');
 
-      // Call the callback function to inform the parent component about the new participant
       onParticipantAdded(participantData);
 
       setSuccess(true);
