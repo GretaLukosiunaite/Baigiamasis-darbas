@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/await-thenable */
 import { useState } from 'react';
 import { IParticipant } from '../../../shared/api/types';
 import Button from '../../atoms/Button';
