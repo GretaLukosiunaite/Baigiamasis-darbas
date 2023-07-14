@@ -174,10 +174,13 @@ const TableRow = ({
               {isParticipantEditing ? (
                 <input
                   className='input is-primary'
-                  type='text'
-                  value={participant.age}
+                  type='number'
+                  value={participant.age.toString()}
                   onChange={(e) => {
-                    const updatedData = { ...participant, age: e.target.value };
+                    const updatedData = {
+                      ...participant,
+                      age: parseInt(e.target.value), // Convert to number
+                    };
                     onUpdateParticipant(participant._id || '', updatedData);
                   }}
                 />
