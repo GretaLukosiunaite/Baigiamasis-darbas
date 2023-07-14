@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { useEffect, useState } from 'react';
 import Table from '../../components/organisims/Table';
 import Footer from '../../components/templates/Footer';
